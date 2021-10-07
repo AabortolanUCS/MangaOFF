@@ -12,14 +12,25 @@ public class Author implements Serializable {
     public static final String CREATE_TABLE =
             "CREATE TABLE " + NOME_TABELA + "("
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUNA_NOME + " TEXT,"
-                    + COLUNA_FOTO + " BLOB,"
-                    + COLUNA_TELEFONE + " TEXT,"
-                    + COLUNA_OBSERVACAO + " TEXT,"
-                    + COLUNA_POSICAO + " INTEGER"
+                    + COLUNA_NAME + " TEXT,"
                     + ")";
 
     private long id;
     private String name;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
