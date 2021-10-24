@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.ucs.mangaoff.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_reading"
+        android:name="com.ucs.mangaoff.ui.dashboard.ReadingFragment"
+        android:label="@string/title_reading"
+        tools:layout="@layout/fragment_reading" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.ucs.mangaoff.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_library"
+        android:name="com.ucs.mangaoff.ui.notifications.LibraryFragment"
+        android:label="@string/title_library"
+        tools:layout="@layout/fragment_library" />
 </navigation>
