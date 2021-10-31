@@ -2,9 +2,7 @@ package com.ucs.mangaoff.baseService.responseModels.responseMangas;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class ResponseMangasData {
+public class ResponseMangasRelationship {
 
     @SerializedName("id")
     private String id;
@@ -13,10 +11,7 @@ public class ResponseMangasData {
     private String type;
 
     @SerializedName("attributes")
-    private ResponseMangasAttributes attributes;
-
-    @SerializedName("relationships")
-    private List<ResponseMangasRelationship> relationships;
+    private ResponseMangasRelAttributes attributes;
 
     public String getId() {
         return id;
@@ -34,19 +29,11 @@ public class ResponseMangasData {
         this.type = type;
     }
 
-    public ResponseMangasAttributes getAttributes() {
+    public ResponseMangasRelAttributes getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(ResponseMangasAttributes attributes) {
+    public void setAttributes(ResponseMangasRelAttributes attributes) {
         this.attributes = attributes;
-    }
-
-    public List<ResponseMangasRelationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(List<ResponseMangasRelationship> relationships) {
-        this.relationships = relationships;
     }
 }
