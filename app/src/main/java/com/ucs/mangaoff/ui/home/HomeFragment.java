@@ -33,6 +33,8 @@ public class HomeFragment extends Fragment {
     HomeListAdapter adapter;
     HomeViewModel viewModel;
 
+    private int skip = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -63,7 +65,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void callService() {
-        viewModel.getMangas(new Callback<ResponseMangas>() {
+        String title = "";//"Her Lies";
+        viewModel.getMangas(skip, 30, title, new Callback<ResponseMangas>() {
             @Override
             public void onResponse(Call<ResponseMangas> call, Response<ResponseMangas> response) {
                 if (response.body() !=  null) {
