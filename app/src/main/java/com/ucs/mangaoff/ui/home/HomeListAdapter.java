@@ -62,7 +62,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.getTitle().setText(localDataSet.get(position).getAttributes().getTitle().getEn());
-        viewHolder.getDescription().setText(localDataSet.get(position).getAttributes().getDescription().getEn());
+        if(localDataSet.get(position).getAttributes().getDescription() != null) {
+            viewHolder.getDescription().setText(localDataSet.get(position).getAttributes().getDescription().getEn());
+        }
         String url = "https://uploads.mangadex.org/covers/" +
                 localDataSet.get(position).getId() +
                 "/" +
