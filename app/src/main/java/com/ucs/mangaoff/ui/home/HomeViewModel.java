@@ -1,5 +1,6 @@
 package com.ucs.mangaoff.ui.home;
 
+import com.ucs.mangaoff.MainActivity;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangas;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitEndpoints;
 import java.io.Serializable;
@@ -9,9 +10,11 @@ import retrofit2.Response;
 
 public class HomeViewModel implements Serializable {
     RetrofitEndpoints service;
+    private MainActivity activity;
 
-    public HomeViewModel(RetrofitEndpoints service) {
+    public HomeViewModel(RetrofitEndpoints service, MainActivity activity) {
         this.service = service;
+        this.activity = activity;
     }
 
     public void getMangas(int skip, int take, String title,Callback<ResponseMangas> callback) {
@@ -27,5 +30,11 @@ public class HomeViewModel implements Serializable {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    // routes
+
+    void routeToChapters(String mangaHash) {
+        activity.routeToChapters(mangaHash);
     }
 }

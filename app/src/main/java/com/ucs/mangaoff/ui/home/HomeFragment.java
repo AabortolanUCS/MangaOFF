@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupList(List<ResponseMangasData> list) {
-        adapter = new HomeListAdapter(list, getActivity());
+        adapter = new HomeListAdapter(list, getActivity(), viewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
