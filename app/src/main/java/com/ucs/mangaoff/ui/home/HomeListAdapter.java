@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
 import com.ucs.mangaoff.R;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
@@ -19,10 +18,12 @@ import java.util.List;
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
     private final List<ResponseMangasData> localDataSet;
     private final Activity activity;
+    private final HomeViewModel viewModel;
 
-    public HomeListAdapter(List<ResponseMangasData> dataSet, Activity activity) {
+    public HomeListAdapter(List<ResponseMangasData> dataSet, Activity activity, HomeViewModel viewModel) {
         this.localDataSet = dataSet;
         this.activity = activity;
+        this.viewModel = viewModel;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +74,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
                 .load(url)
                 .centerCrop()
                 .into(viewHolder.getCover());
+
+        viewHolder.itemView.setOnClickListener(view -> viewModel.routeToChapters(localDataSet.get(position).getId()));
     }
 
     private String getCoverUrl(List<ResponseMangasRelationship> relationships) {

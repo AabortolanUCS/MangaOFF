@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitClientInstance;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitEndpoints;
+import com.ucs.mangaoff.ui.chapters.ChaptersFragment;
+import com.ucs.mangaoff.ui.chapters.ChaptersViewModel;
 import com.ucs.mangaoff.ui.dashboard.ReadingFragment;
 import com.ucs.mangaoff.ui.home.HomeFragment;
 import com.ucs.mangaoff.ui.home.HomeViewModel;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void instanceHomeFragment() {
-        HomeViewModel viewModel = new HomeViewModel(service);
+        HomeViewModel viewModel = new HomeViewModel(service, this);
         Fragment fragment = HomeFragment.newInstance(viewModel);
         openFragment(fragment);
     }
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.navigation_home) {
-            HomeViewModel viewModel = new HomeViewModel(service);
+            HomeViewModel viewModel = new HomeViewModel(service, this);
             Fragment fragment = HomeFragment.newInstance(viewModel);
             openFragment(fragment);
         } else if (id == R.id.navigation_reading) {
@@ -66,5 +68,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    // routes
+
+    public void routeToChapters(String mangaHash) {
+        ChaptersViewModel viewModel = new ChaptersViewModel(service, this, mangaHash);
+        Fragment fragment = ChaptersFragment.newInstance(viewModel);
+        openFragment(fragment);
     }
 }
