@@ -1,6 +1,20 @@
 package com.ucs.mangaoff.ui.home;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +23,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.ucs.mangaoff.R;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasRelationship;
+import com.ucs.mangaoff.utils.MangaOffUtils;
 
 import java.util.List;
 
@@ -69,22 +86,19 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         String url = "https://uploads.mangadex.org/covers/" +
                 localDataSet.get(position).getId() +
                 "/" +
-                getCoverUrl(localDataSet.get(position).getRelationships());
+                MangaOffUtils.getCoverUrl(localDataSet.get(position).getRelationships());
         Glide.with(activity)
                 .load(url)
-                .centerCrop()
-                .into(viewHolder.getCover());
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        Bitmap bitmap = ThumbnailUtils.extractThumbnail(resource, 400, 400);
+                        MangaOffUtils.setRoundedThumb(bitmap, bitmap.getWidth(), bitmap.getHeight(), viewHolder.getCover(), activity);
+                    }
+                });
 
-        viewHolder.itemView.setOnClickListener(view -> viewModel.routeToChapters(localDataSet.get(position).getId()));
-    }
-
-    private String getCoverUrl(List<ResponseMangasRelationship> relationships) {
-        for (ResponseMangasRelationship item: relationships) {
-            if (item.getType().equals("cover_art")) {
-                return item.getAttributes().getFileName();
-            }
-        }
-        return "";
+        viewHolder.itemView.setOnClickListener(view -> viewModel.routeToChapters(localDataSet.get(position)));
     }
 
     @Override
