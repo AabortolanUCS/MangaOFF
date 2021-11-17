@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitClientInstance;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitEndpoints;
 import com.ucs.mangaoff.ui.chapters.ChaptersFragment;
@@ -16,6 +17,10 @@ import com.ucs.mangaoff.ui.dashboard.ReadingFragment;
 import com.ucs.mangaoff.ui.home.HomeFragment;
 import com.ucs.mangaoff.ui.home.HomeViewModel;
 import com.ucs.mangaoff.ui.notifications.LibraryFragment;
+import com.ucs.mangaoff.ui.pages.PagesFragment;
+import com.ucs.mangaoff.ui.pages.PagesViewModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -72,9 +77,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // routes
 
-    public void routeToChapters(String mangaHash) {
-        ChaptersViewModel viewModel = new ChaptersViewModel(service, this, mangaHash);
+    public void routeToChapters(ResponseMangasData mangaData) {
+        ChaptersViewModel viewModel = new ChaptersViewModel(service, this, mangaData);
         Fragment fragment = ChaptersFragment.newInstance(viewModel);
+        openFragment(fragment);
+    }
+
+    public void routeToPages(String chapterHash, List<String> pages, int currentPage) {
+        PagesViewModel viewModel = new PagesViewModel(chapterHash, pages, currentPage);
+        Fragment fragment = PagesFragment.newInstance(viewModel);
         openFragment(fragment);
     }
 }

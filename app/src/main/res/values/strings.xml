@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_reading">Lendo</string>
     <string name="title_library">Biblioteca</string>
+    <string name="sinopsis_title">Sinopse</string>
+    <string name="biblioteca">biblioteca</string>
+    <string name="lista_de_cap_tulos">Lista de capítulos</string>
 </resources>

@@ -2,6 +2,7 @@ package com.ucs.mangaoff.ui.home;
 
 import com.ucs.mangaoff.MainActivity;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangas;
+import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitEndpoints;
 import java.io.Serializable;
 import retrofit2.Call;
@@ -18,7 +19,8 @@ public class HomeViewModel implements Serializable {
     }
 
     public void getMangas(int skip, int take, String title,Callback<ResponseMangas> callback) {
-        Call<ResponseMangas> call = service.getMangas("https://api.mangadex.org/manga?limit="+take+"&offset="+skip+"&title="+title+"&contentRating[]=safe&includes[]=cover_art");
+        Call<ResponseMangas> call = service.getMangas("https://api.mangadex.org/manga?limit="+take+"&offset="+skip+"&title="+title+
+                "&contentRating[]=safe&includes[]=cover_art&publicationDemographic[]=shounen");
         call.enqueue(new Callback<ResponseMangas>() {
             @Override
             public void onResponse(Call<ResponseMangas> call, Response<ResponseMangas> response) {
@@ -34,7 +36,7 @@ public class HomeViewModel implements Serializable {
 
     // routes
 
-    void routeToChapters(String mangaHash) {
-        activity.routeToChapters(mangaHash);
+    void routeToChapters(ResponseMangasData mangaData) {
+        activity.routeToChapters(mangaData);
     }
 }
