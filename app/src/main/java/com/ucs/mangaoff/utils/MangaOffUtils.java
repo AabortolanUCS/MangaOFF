@@ -13,8 +13,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
+import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChaptersData;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasRelationship;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MangaOffUtils {
@@ -60,5 +62,15 @@ public class MangaOffUtils {
         c.drawRect(new RectF(radius, 0, w, h), paint);
         c.drawRoundRect(rec, radius, radius, paint);
         v.setBackground(new BitmapDrawable(context.getResources(), bmp));
+    }
+
+    public static List<ResponseChaptersData> filterMangas(List<ResponseChaptersData> list) {
+        List<ResponseChaptersData> newList = new ArrayList<>();
+        for (ResponseChaptersData item: list) {
+            if(item.getAttributes().getData().size() > 0) {
+                newList.add(item);
+            }
+        }
+        return newList;
     }
 }

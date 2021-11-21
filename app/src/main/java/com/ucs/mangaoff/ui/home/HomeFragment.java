@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.ucs.mangaoff.R;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangas;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
@@ -28,6 +31,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     HomeListAdapter adapter;
     HomeViewModel viewModel;
+    ProgressBar progressBar;
 
     private int skip = 0;
 
@@ -58,14 +62,20 @@ public class HomeFragment extends Fragment {
 
     private void findViewsById(View view) {
        recyclerView = view.findViewById(R.id.home_recycler_view);
+       progressBar = view.findViewById(R.id.home_progress);
     }
 
     private void callService() {
         String title = "";//"Her Lies";
+        Sprite doubleBounce = new DoubleBounce();
+        recyclerView.setVisibility(View.INVISIBLE);
+        progressBar.setIndeterminateDrawable(doubleBounce);
         viewModel.getMangas(skip, 30, title, new Callback<ResponseMangas>() {
             @Override
             public void onResponse(Call<ResponseMangas> call, Response<ResponseMangas> response) {
                 if (response.body() !=  null) {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     setupList(response.body().getData());
                 }
             }
