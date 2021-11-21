@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.ucs.mangaoff.R;
 import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChapters;
 import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChaptersData;
@@ -40,6 +44,8 @@ public class ChaptersFragment extends Fragment {
     private TextView sinopsis;
     private RecyclerView recyclerView;
     private ChaptersAdapter adapter;
+    private ProgressBar progressBar;
+    private NestedScrollView scrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +68,8 @@ public class ChaptersFragment extends Fragment {
         author = view.findViewById(R.id.author_name);
         sinopsis = view.findViewById(R.id.sinopsis);
         recyclerView = view.findViewById(R.id.chapters_recycler_view);
+        progressBar = view.findViewById(R.id.chapters_progress);
+        scrollView = view.findViewById(R.id.chapters_scroll);
     }
 
     private void callService() {
@@ -80,13 +88,18 @@ public class ChaptersFragment extends Fragment {
                         cover.setImageBitmap(bitmap);
                     }
                 });
-
-        viewModel.getChapters(new Callback<ResponseChapters>() {
+          Sprite doubleBounce = new DoubleBounce();
+          scrollView.setVisibility(View.INVISIBLE);
+          progressBar.setIndeterminateDrawable(doubleBounce);
+          viewModel.getChapters(new Callback<ResponseChapters>() {
             @Override
             public void onResponse(Call<ResponseChapters> call, Response<ResponseChapters> response) {
                 if (response.body() != null) {
-                    setupList(response.body().getData());
+                    List<ResponseChaptersData> newList = MangaOffUtils.filterMangas(response.body().getData());
+                    setupList(newList);
                 }
+                scrollView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

@@ -7,11 +7,12 @@
         <entry key="app/src/main/res/drawable/alpha_gradient.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/progress.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/drawable/rouded_corner.xml" value="0.6976179298233574" />
         <entry key="app/src/main/res/drawable/rounded_left_corner.xml" value="0.4008795508236087" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/chapter_list_item.xml" value="0.288885517135344" />
-        <entry key="app/src/main/res/layout/fragment_chapters.xml" value="0.35991605456453307" />
+        <entry key="app/src/main/res/layout/fragment_chapters.xml" value="0.2262532981530343" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/fragment_library.xml" value="0.17916666666666667" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/layout/fragment_reading.xml" value="0.21739130434782608" />
         <entry key="app/src/main/res/layout/liste_item.xml" value="0.1671875" />
         <entry key="app/src/main/res/layout/manga_list_item.xml" value="0.32474963121363865" />
+        <entry key="app/src/main/res/layout/progress.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.17916666666666667" />
       </map>
     </option>

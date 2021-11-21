@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private BottomNavigationView navigationView;
     private RetrofitEndpoints service;
+    private int currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +48,38 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void instanceHomeFragment() {
+        currentFragment = R.id.navigation_home;
         HomeViewModel viewModel = new HomeViewModel(service, this);
         Fragment fragment = HomeFragment.newInstance(viewModel);
         openFragment(fragment);
     }
 
     @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.container);
+        if(f instanceof HomeFragment ||
+           f instanceof ReadingFragment ||
+           f instanceof LibraryFragment ) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.navigation_home) {
+            currentFragment = R.id.navigation_home;
             HomeViewModel viewModel = new HomeViewModel(service, this);
             Fragment fragment = HomeFragment.newInstance(viewModel);
             openFragment(fragment);
         } else if (id == R.id.navigation_reading) {
+            currentFragment = R.id.navigation_reading;
             Fragment fragment = ReadingFragment.newInstance();
             openFragment(fragment);
         } else if (id == R.id.navigation_library) {
+            currentFragment = R.id.navigation_library;
             Fragment fragment = LibraryFragment.newInstance();
             openFragment(fragment);
         }
