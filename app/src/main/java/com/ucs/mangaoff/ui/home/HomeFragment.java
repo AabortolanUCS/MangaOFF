@@ -34,6 +34,11 @@ public class HomeFragment extends Fragment {
     ProgressBar progressBar;
 
     private int skip = 0;
+    private String title = "";//"Her Lies";
+
+    private boolean occupied = false;
+
+    private List<ResponseMangasData> list;
 
 
     @Override
@@ -50,6 +55,17 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViewsById(view);
         callService();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    remoteCall();
+                }
+            }
+        });
     }
 
     public static HomeFragment newInstance(HomeViewModel viewModel) {
@@ -66,28 +82,59 @@ public class HomeFragment extends Fragment {
     }
 
     private void callService() {
-        String title = "";//"Her Lies";
+
         Sprite doubleBounce = new DoubleBounce();
         recyclerView.setVisibility(View.INVISIBLE);
         progressBar.setIndeterminateDrawable(doubleBounce);
-        viewModel.getMangas(skip, 30, title, new Callback<ResponseMangas>() {
-            @Override
-            public void onResponse(Call<ResponseMangas> call, Response<ResponseMangas> response) {
-                if (response.body() !=  null) {
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    setupList(response.body().getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseMangas> call, Throwable t) {
-                Log.d("ERRO", t.getLocalizedMessage());
-            }
-        });
+        remoteCall();
     }
 
-    private void setupList(List<ResponseMangasData> list) {
+    private void remoteCall() {
+
+        if(!occupied) {
+
+            occupied = true;
+
+            viewModel.getMangas(skip, 30, title, new Callback<ResponseMangas>() {
+                @Override
+                public void onResponse(Call<ResponseMangas> call, Response<ResponseMangas> response) {
+                    if (response.body() !=  null) {
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+
+                        if(list != null && list.size() > 0) {
+
+                            List<ResponseMangasData> newItems = response.body().getData();
+
+                            for (int i = 0; i < newItems.size(); i++) {
+                                list.add(skip + i, newItems.get(i));
+                            }
+
+                            adapter.notifyItemRangeInserted(skip, newItems.size());
+
+                        } else {
+                            list = response.body().getData();
+                            setupList();
+                        }
+
+                        occupied = false;
+                        skip += 30;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseMangas> call, Throwable t) {
+                    occupied = false;
+                    Log.d("ERRO", t.getLocalizedMessage());
+                }
+            });
+        }
+
+
+
+    }
+
+    private void setupList() {
         adapter = new HomeListAdapter(list, getActivity(), viewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
