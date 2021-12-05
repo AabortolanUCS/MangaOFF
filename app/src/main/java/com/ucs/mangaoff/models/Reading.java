@@ -1,49 +1,56 @@
 package com.ucs.mangaoff.models;
 
+import com.orm.SugarRecord;
+
+import org.apache.commons.lang3.SerializationUtils;
+
 import java.io.Serializable;
 
-public class Reading implements Serializable{
+public class Reading extends SugarRecord implements Serializable {
 
-    public static final String NOME_TABELA = "readings";
+    private int currentPage;
+    private String currentChapter;
+    private String currentLanguage;
+    private byte[] manga;
 
-    public static final String COLUNA_ID = "id";
-    public static final String COLUNA_CHAPTER_ID = "chapterID";
-    public static final String COLUNA_LAST_PAGE = "lastPage";
-
-    public static final String CREATE_TABLE =
-            "CREATE TABLE " + NOME_TABELA + "("
-                    + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUNA_LAST_PAGE + " INTEGER,"
-                    + COLUNA_CHAPTER_ID + " INTEGER FOREIGN KEY REFERENCES" + Chapter.NOME_TABELA + "(" + COLUNA_CHAPTER_ID + ")"
-                    + ")";
-
-    private long id;
-    private int lastPage;
-    private long chapterID;
-
-    public long getId() {
-        return id;
+    public Reading(int currentPage, String currentChapter, Manga manga, String currentLanguage) {
+        this.currentPage = currentPage;
+        this.currentChapter = currentChapter;
+        this.currentLanguage = currentLanguage;
+        setManga(manga);
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Reading() { }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public int getLastPage() {
-        return lastPage;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
-    public void setLastPage(int lastPage) {
-        this.lastPage = lastPage;
+    public String getCurrentChapter() {
+        return currentChapter;
     }
 
-    public long getChapterID() {
-        return chapterID;
+    public void setCurrentChapter(String currentChapter) {
+        this.currentChapter = currentChapter;
     }
 
-    public void setChapterID(long chapterID) {
-        this.chapterID = chapterID;
+    public Manga getManga() {
+        return SerializationUtils.deserialize(manga);
     }
 
+    public void setManga(Manga manga) {
+        this.manga = SerializationUtils.serialize(manga);;
+    }
 
+    public String getCurrentLanguage() {
+        return currentLanguage;
+    }
+
+    public void setCurrentLanguage(String currentLanguage) {
+        this.currentLanguage = currentLanguage;
+    }
 }

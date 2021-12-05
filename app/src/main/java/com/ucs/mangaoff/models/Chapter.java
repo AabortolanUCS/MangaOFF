@@ -3,42 +3,30 @@ package com.ucs.mangaoff.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Chapter implements Serializable {
 
-    public static final String NOME_TABELA = "chapters";
-
-    public static final String COLUNA_ID = "id";
-    public static final String COLUNA_NAME = "name";
-    public static final String COLUNA_PHOTO = "photo";
-    public static final String COLUNA_DESCRIPTION = "description";
-    public static final String COLUNA_NUMBER = "number";
-    public static final String COLUNA_MANGA_ID = "mangaID";
-
-    public static final String CREATE_TABLE =
-            "CREATE TABLE " + NOME_TABELA + "("
-                    + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUNA_NAME + " TEXT,"
-                    + COLUNA_PHOTO + " BLOB,"
-                    + COLUNA_DESCRIPTION + " TEXT,"
-                    + COLUNA_NUMBER + " INTEGER,"
-                    + COLUNA_MANGA_ID + " INTEGER FOREIGN KEY REFERENCES" + Manga.NOME_TABELA + "(" + COLUNA_MANGA_ID + ")"
-                    + ")";
-
-    private long id;
     private String name;
     private byte[] photo;
     private String description;
-    private int number;
-    private long mangaID;
+    private String number;
+    private List<Page> pages;
+    private String language;
+    private String hash;
 
-    public long getId() {
-        return id;
+    public Chapter(String name, byte[] photo, String description, String number, List<Page> pages, String language, String hash) {
+        this.name = name;
+        this.photo = photo;
+        this.description = description;
+        this.number = number;
+        this.pages = pages;
+        this.language = language;
+        this.hash = hash;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public Chapter() { }
 
     public String getName() {
         return name;
@@ -71,19 +59,53 @@ public class Chapter implements Serializable {
         this.description = description;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public long getMangaID() {
-        return mangaID;
+    public List<Page> getPages() {
+        return pages;
     }
 
-    public void setMangaID(long mangaID) {
-        this.mangaID = mangaID;
+    public void setStringPages(List<String> hashs) {
+        List<Page> pages = new ArrayList<>();
+        for (String hash: hashs) {
+            Page page = new Page();
+            page.setHashPage(hash);
+            pages.add(page);
+        }
+        this.pages = pages;
+    }
+
+    public List<String> getStringPages() {
+        List<String> hashs = new ArrayList<>();
+        for (Page item: pages) {
+            hashs.add(item.getHashPage());
+        }
+       return hashs;
+    }
+
+    public void setPages(List<Page> pages) {
+        this.pages = pages;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

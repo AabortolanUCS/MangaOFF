@@ -55,13 +55,15 @@ public class PagesFragment extends Fragment {
         previousPage.setOnClickListener(view -> {
             if(viewModel.currentPage > 0) {
                 viewModel.currentPage--;
+                viewModel.savePage();
                 loadPage();
             }
         });
 
         nextPage.setOnClickListener(view -> {
-            if(viewModel.currentPage < viewModel.pages.size()) {
+            if(viewModel.currentPage < viewModel.pages.size() - 1) {
                 viewModel.currentPage++;
+                viewModel.savePage();
                 loadPage();
             }
         });
