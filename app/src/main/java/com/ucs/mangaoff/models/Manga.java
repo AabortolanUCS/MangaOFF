@@ -3,39 +3,26 @@ package com.ucs.mangaoff.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class Manga implements Serializable{
+public class Manga implements Serializable {
 
-    public static final String NOME_TABELA = "mangas";
-
-    public static final String COLUNA_ID = "id";
-    public static final String COLUNA_NAME = "name";
-    public static final String COLUNA_PHOTO = "photo";
-    public static final String COLUNA_DESCRIPTION = "description";
-    public static final String COLUNA_AUTHOR_ID = "authorID";
-
-    public static final String CREATE_TABLE =
-            "CREATE TABLE " + NOME_TABELA + "("
-                    + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUNA_NAME + " TEXT,"
-                    + COLUNA_PHOTO + " BLOB,"
-                    + COLUNA_DESCRIPTION + " TEXT,"
-                    + COLUNA_AUTHOR_ID + " INTEGER FOREIGN KEY REFERENCES" + Author.NOME_TABELA + "(" + COLUNA_AUTHOR_ID + ")"
-                    + ")";
-
-    private long id;
     private String name;
     private byte[] photo;
+    private String hashPhoto;
     private String description;
-    private long authorID;
+    private List<Chapter> chapters;
+    private Author author;
 
-    public long getId() {
-        return id;
+    public Manga(String name, byte[] photo, String description, List<Chapter> chapters, Author author) {
+        this.name = name;
+        this.photo = photo;
+        this.description = description;
+        this.chapters = chapters;
+        this.author = author;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public Manga() { }
 
     public String getName() {
         return name;
@@ -60,6 +47,14 @@ public class Manga implements Serializable{
         this.photo = photo;
     }
 
+    public String getHashPhoto() {
+        return hashPhoto;
+    }
+
+    public void setHashPhoto(String hashPhoto) {
+        this.hashPhoto = hashPhoto;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -68,11 +63,19 @@ public class Manga implements Serializable{
         this.description = description;
     }
 
-    public long getAuthorID() {
-        return authorID;
+    public List<Chapter> getChapters() {
+        return chapters;
     }
 
-    public void setAuthorID(long authorID) {
-        this.authorID = authorID;
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

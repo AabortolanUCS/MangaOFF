@@ -1,4 +1,4 @@
-package com.ucs.mangaoff.ui.home;
+package com.ucs.mangaoff.ui.search;
 
 import com.ucs.mangaoff.MainActivity;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangas;
@@ -10,11 +10,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeViewModel extends BaseViewModel {
+public class SearchViewModel extends BaseViewModel {
     RetrofitEndpoints service;
     private MainActivity activity;
 
-    public HomeViewModel(RetrofitEndpoints service, MainActivity activity) {
+    public SearchViewModel(RetrofitEndpoints service, MainActivity activity) {
         super();
         this.service = service;
         this.activity = activity;

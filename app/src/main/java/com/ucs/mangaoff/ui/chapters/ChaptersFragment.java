@@ -95,6 +95,7 @@ public class ChaptersFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseChapters> call, Response<ResponseChapters> response) {
                 if (response.body() != null) {
+                    viewModel.chaptersData = response.body();
                     List<ResponseChaptersData> newList = MangaOffUtils.filterMangas(response.body().getData());
                     setupList(newList);
                 }
@@ -123,7 +124,7 @@ public class ChaptersFragment extends Fragment {
     }
 
     private void setupList(List<ResponseChaptersData> list) {
-        adapter = new ChaptersAdapter(list, getActivity(), viewModel);
+        adapter = new ChaptersAdapter(list, viewModel);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

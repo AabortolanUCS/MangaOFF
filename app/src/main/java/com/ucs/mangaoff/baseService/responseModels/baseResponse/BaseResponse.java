@@ -1,9 +1,6 @@
 package com.ucs.mangaoff.baseService.responseModels.baseResponse;
 
 import com.google.gson.annotations.SerializedName;
-import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
-
-import java.util.List;
 
 public class BaseResponse {
 

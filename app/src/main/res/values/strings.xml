@@ -6,4 +6,7 @@
     <string name="sinopsis_title">Sinopse</string>
     <string name="biblioteca">biblioteca</string>
     <string name="lista_de_cap_tulos">Lista de capítulos</string>
+    <string name="title_uppercased">MANGAOFF</string>
+    <string name="resultados_da_pesquisa">Resultados da pesquisa</string>
+    <string name="digite_aqui_sua_pesquisa">Digite aqui sua pesquisa</string>
 </resources>
