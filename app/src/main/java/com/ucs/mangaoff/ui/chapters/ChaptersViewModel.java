@@ -30,10 +30,10 @@ public class ChaptersViewModel extends BaseViewModel {
         this.mangaData = mangaData;
     }
 
-    public void getChapters(Callback<ResponseChapters> callback) {
+    public void getChapters(int skip, int take, Callback<ResponseChapters> callback) {
         Call<ResponseChapters> call = service.getChapters("https://api.mangadex.org/manga/" +
                 mangaData.getId() +
-                "/feed?limit=96&includes[]=scanlation_group&includes[]=user&order[volume]=desc&order[chapter]=desc&offset=0&limit=500&contentRating[]=safe");
+                "/feed?limit=96&includes[]=scanlation_group&includes[]=user&order[volume]=desc&order[chapter]=desc&offset="+skip+"&limit="+take+"&contentRating[]=safe");
         call.enqueue(new Callback<ResponseChapters>() {
             @Override
             public void onResponse(Call<ResponseChapters> call, Response<ResponseChapters> response) {

@@ -47,6 +47,12 @@ public class ChaptersFragment extends Fragment {
     private ProgressBar progressBar;
     private NestedScrollView scrollView;
 
+    private List<ResponseChaptersData> list;
+
+    private int skip = 0;
+    private boolean occupied = false;
+    private boolean canLoad = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,6 +66,18 @@ public class ChaptersFragment extends Fragment {
         findViewsById(view);
         callService();
         populate();
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+
+                if(!v.canScrollVertically(1)) {
+                    remoteCall();
+                }
+
+            }
+        });
     }
 
     private void findViewsById(View view) {
@@ -91,23 +109,55 @@ public class ChaptersFragment extends Fragment {
           Sprite doubleBounce = new DoubleBounce();
           scrollView.setVisibility(View.INVISIBLE);
           progressBar.setIndeterminateDrawable(doubleBounce);
-          viewModel.getChapters(new Callback<ResponseChapters>() {
-            @Override
-            public void onResponse(Call<ResponseChapters> call, Response<ResponseChapters> response) {
-                if (response.body() != null) {
-                    viewModel.chaptersData = response.body();
-                    List<ResponseChaptersData> newList = MangaOffUtils.filterMangas(response.body().getData());
-                    setupList(newList);
-                }
-                scrollView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
+        remoteCall();
 
-            @Override
-            public void onFailure(Call<ResponseChapters> call, Throwable t) {
-                Log.d("TAG", t.getLocalizedMessage());
-            }
-        });
+    }
+
+    private void remoteCall() {
+
+        if(!occupied && canLoad) {
+            occupied = true;
+
+            viewModel.getChapters(skip, 100, new Callback<ResponseChapters>() {
+                @Override
+                public void onResponse(Call<ResponseChapters> call, Response<ResponseChapters> response) {
+                    if (response.body() != null) {
+
+                        List<ResponseChaptersData> newList = MangaOffUtils.filterMangas(response.body().getData());
+                        if(newList.size() > 0) {
+                            if (list != null && list.size() > 0) {
+
+
+                                for (int i = 0; i < newList.size(); i++) {
+                                    list.add(skip + i, newList.get(i));
+                                }
+
+                                adapter.notifyItemRangeInserted(skip, newList.size());
+
+                            } else {
+                                viewModel.chaptersData = response.body();
+                                list = newList;
+                                setupList();
+                                scrollView.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+                            skip += newList.size();
+                        }
+                    }
+
+
+                    occupied = false;
+                }
+
+                @Override
+                public void onFailure(Call<ResponseChapters> call, Throwable t) {
+                    Log.d("TAG", t.getLocalizedMessage());
+                    occupied = false;
+                }
+            });
+        }
+
     }
 
     private void populate() {
@@ -123,7 +173,7 @@ public class ChaptersFragment extends Fragment {
         return fragment;
     }
 
-    private void setupList(List<ResponseChaptersData> list) {
+    private void setupList() {
         adapter = new ChaptersAdapter(list, viewModel);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
