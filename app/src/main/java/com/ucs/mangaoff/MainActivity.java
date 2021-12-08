@@ -15,6 +15,9 @@ import com.orm.SugarContext;
 import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitClientInstance;
 import com.ucs.mangaoff.baseService.retrofitConfig.RetrofitEndpoints;
+import com.ucs.mangaoff.models.Chapter;
+import com.ucs.mangaoff.models.SavedChapters;
+import com.ucs.mangaoff.models.SavedImages;
 import com.ucs.mangaoff.ui.chapters.ChaptersFragment;
 import com.ucs.mangaoff.ui.chapters.ChaptersViewModel;
 import com.ucs.mangaoff.ui.home.HomeFragment;
@@ -25,6 +28,8 @@ import com.ucs.mangaoff.ui.pages.PagesFragment;
 import com.ucs.mangaoff.ui.pages.PagesViewModel;
 import com.ucs.mangaoff.ui.search.SearchFragment;
 import com.ucs.mangaoff.ui.search.SearchViewModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

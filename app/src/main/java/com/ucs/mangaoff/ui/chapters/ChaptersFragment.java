@@ -84,6 +84,7 @@ public class ChaptersFragment extends Fragment {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         Bitmap bitmap = ThumbnailUtils.extractThumbnail(resource, 1260, 800);
+                        viewModel.cover = resource;
                         bitmap = MangaOffUtils.addGradient(bitmap);
                         cover.setImageBitmap(bitmap);
                     }

@@ -12,6 +12,8 @@ public class Reading extends SugarRecord implements Serializable {
     private String currentChapter;
     private String currentLanguage;
     private byte[] manga;
+    private boolean isSaved = false;
+    private long chapterId;
 
     public Reading(int currentPage, String currentChapter, Manga manga, String currentLanguage) {
         this.currentPage = currentPage;
@@ -43,7 +45,7 @@ public class Reading extends SugarRecord implements Serializable {
     }
 
     public void setManga(Manga manga) {
-        this.manga = SerializationUtils.serialize(manga);;
+        this.manga = SerializationUtils.serialize(manga);
     }
 
     public String getCurrentLanguage() {
@@ -52,5 +54,21 @@ public class Reading extends SugarRecord implements Serializable {
 
     public void setCurrentLanguage(String currentLanguage) {
         this.currentLanguage = currentLanguage;
+    }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
+
+    public long getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(long chapterId) {
+        this.chapterId = chapterId;
     }
 }
