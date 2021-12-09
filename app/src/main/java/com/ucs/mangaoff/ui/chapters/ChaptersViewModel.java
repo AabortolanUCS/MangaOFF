@@ -1,5 +1,7 @@
 package com.ucs.mangaoff.ui.chapters;
 
+import android.graphics.Bitmap;
+
 import com.ucs.mangaoff.MainActivity;
 import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChapters;
 import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChaptersData;
@@ -20,6 +22,7 @@ public class ChaptersViewModel extends BaseViewModel {
     MainActivity activity;
     ResponseMangasData mangaData;
     ResponseChapters chaptersData;
+    Bitmap cover;
 
     public ChaptersViewModel(RetrofitEndpoints service,
                              MainActivity activity,

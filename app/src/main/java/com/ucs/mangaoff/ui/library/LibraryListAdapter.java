@@ -14,18 +14,23 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.ucs.mangaoff.R;
-import com.ucs.mangaoff.baseService.responseModels.responseMangas.ResponseMangasData;
+import com.ucs.mangaoff.baseService.responseModels.responseChapters.ResponseChaptersData;
+import com.ucs.mangaoff.models.Chapter;
+import com.ucs.mangaoff.models.Manga;
+import com.ucs.mangaoff.models.Reading;
+import com.ucs.mangaoff.models.SavedChapters;
 import com.ucs.mangaoff.ui.home.HomeListAdapter;
 import com.ucs.mangaoff.utils.MangaOffUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class LibraryListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
-    private final List<ResponseMangasData> localDataSet;
+public class LibraryListAdapter extends RecyclerView.Adapter<LibraryListAdapter.ViewHolder> {
+    private final List<SavedChapters> localDataSet;
     private final Activity activity;
     private final LibraryViewModel viewModel;
 
-    public LibraryListAdapter(List<ResponseMangasData> dataSet, Activity activity, LibraryViewModel viewModel) {
+    public LibraryListAdapter(List<SavedChapters> dataSet, Activity activity, LibraryViewModel viewModel) {
         this.localDataSet = dataSet;
         this.activity = activity;
         this.viewModel = viewModel;
@@ -34,14 +39,14 @@ public class LibraryListAdapter extends RecyclerView.Adapter<HomeListAdapter.Vie
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView cover;
         private final TextView title;
-        private final TextView description;
+        private final TextView chapter;
 
 
         public ViewHolder(View view) {
             super(view);
-            cover = view.findViewById(R.id.cover);
-            title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
+            cover = view.findViewById(R.id.saved_cover);
+            title = view.findViewById(R.id.saved_title);
+            chapter = view.findViewById(R.id.saved_chapter);
         }
 
         public ImageView getCover() {
@@ -52,41 +57,41 @@ public class LibraryListAdapter extends RecyclerView.Adapter<HomeListAdapter.Vie
             return title;
         }
 
-        public TextView getDescription() {
-            return description;
+        public TextView getChapter() {
+            return chapter;
         }
     }
 
     @Override
-    public HomeListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public LibraryListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.manga_list_item, viewGroup, false);
+                .inflate(R.layout.saved_list_item, viewGroup, false);
 
-        return new HomeListAdapter.ViewHolder(view);
+        return new LibraryListAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(HomeListAdapter.ViewHolder viewHolder, final int position) {
-        viewHolder.getTitle().setText(localDataSet.get(position).getAttributes().getTitle().getEn());
-        if(localDataSet.get(position).getAttributes().getDescription() != null) {
-            viewHolder.getDescription().setText(localDataSet.get(position).getAttributes().getDescription().getEn());
-        }
-        String url = "https://uploads.mangadex.org/covers/" +
-                localDataSet.get(position).getId() +
-                "/" +
-                MangaOffUtils.getCoverUrl(localDataSet.get(position).getRelationships());
-        Glide.with(activity)
-                .load(url)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        Bitmap bitmap = ThumbnailUtils.extractThumbnail(resource, 400, 400);
-                        MangaOffUtils.setRoundedThumb(bitmap, bitmap.getWidth(), bitmap.getHeight(), viewHolder.getCover(), activity);
-                    }
-                });
+    public void onBindViewHolder(LibraryListAdapter.ViewHolder viewHolder, final int position) {
+        SavedChapters chapter = localDataSet.get(position);
+        viewHolder.getCover().setImageBitmap(chapter.getCoverBitmap());
+        viewHolder.getTitle().setText(chapter.getMangaName());
+        viewHolder.getChapter().setText(chapter.getName());
+        viewHolder.itemView.setOnClickListener(view -> {
+            saveReading(position);
+            viewModel.routeToPages();
+        });
+    }
 
-        viewHolder.itemView.setOnClickListener(view -> viewModel.routeToPages());
+    private void saveReading(int position) {
+        Reading reading = Reading.last(Reading.class);
+        SavedChapters currentChapter = localDataSet.get(position);
+        if (reading == null) {
+            reading = new Reading();
+        }
+        reading.setSaved(true);
+        reading.setChapterId(currentChapter.getId());
+        reading.setCurrentPage(0);
+        reading.save();
     }
 
     @Override

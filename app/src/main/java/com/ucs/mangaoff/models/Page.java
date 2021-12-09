@@ -9,8 +9,8 @@ public class Page implements Serializable {
     private byte[] photo;
     private String hashPage;
 
-    public Page(byte[] photo) {
-        this.photo = photo;
+    public Page(Bitmap photo) {
+       setPhotoBitmap(photo);
     }
 
     public Page() { }
@@ -24,6 +24,10 @@ public class Page implements Serializable {
             return Utils.getImage(photo);
         }
         return null;
+    }
+
+    public void setPhotoBitmap(Bitmap photoBitmap) {
+        photo = Utils.getBytes(photoBitmap);
     }
 
     public void setPhoto(byte[] photo) {

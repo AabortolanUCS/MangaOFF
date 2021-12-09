@@ -12,13 +12,22 @@ public class PagesViewModel extends BaseViewModel {
     String chapterHash;
     List<String> pages;
     int currentPage;
+    boolean isSaved;
+    long chapterId;
+    int pageNumber;
 
     public PagesViewModel() {
         super();
         Reading reading = Reading.last(Reading.class);
-        Chapter chapter = getCurrentChapter(reading);
-        chapterHash = chapter.getHash();
-        pages = chapter.getStringPages();
+        if (!reading.isSaved()) {
+            Chapter chapter = getCurrentChapter(reading);
+            chapterHash = chapter.getHash();
+            pages = chapter.getStringPages();
+            pageNumber = pages.size();
+        } else {
+            isSaved = true;
+            chapterId = reading.getChapterId();
+        }
         currentPage = reading.getCurrentPage();
     }
 

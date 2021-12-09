@@ -9,6 +9,7 @@ import java.util.List;
 public class Chapter implements Serializable {
 
     private String name;
+    private String mangaName;
     private byte[] photo;
     private String description;
     private String number;
@@ -107,5 +108,13 @@ public class Chapter implements Serializable {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public String getMangaName() {
+        return mangaName;
+    }
+
+    public void setMangaName(String mangaName) {
+        this.mangaName = mangaName;
     }
 }
